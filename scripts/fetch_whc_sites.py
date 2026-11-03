@@ -32,7 +32,7 @@ OUT_CSV = ROOT / "data" / "earth_reference" / "whc_vii_viii.csv"
 OUT_META = OUT_CSV.with_suffix(".meta.json")
 ENDPOINT = "https://query.wikidata.org/sparql"
 # Wikimedia 要求脚本带可识别的 User-Agent（https://meta.wikimedia.org/wiki/User-Agent_policy）
-UA = "mythic-planet-lab/0.1 (https://github.com/1521183894w-ux/mythic-planet-lab) research script"
+UA = "mythic-planet-lab/0.1 (https://github.com/1521183894w-bit/mythic-planet-lab) research script"
 
 CRITERIA = {  # Wikidata 中 UNESCO 入选标准 (i)–(x) 的条目
     "Q23038972": "i", "Q23038976": "ii", "Q23038977": "iii", "Q23038978": "iv", "Q23038979": "v",

@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT_CSV = ROOT / "data" / "earth_reference" / "iugs_geoheritage_sites.csv"
 OUT_META = OUT_CSV.with_suffix(".meta.json")
 ENDPOINT = "https://iugs-geoheritage.org/wp-json/wp/v2/geoheritage_sites"
-UA = "mythic-planet-lab/0.1 (https://github.com/1521183894w-ux/mythic-planet-lab) research script"
+UA = "mythic-planet-lab/0.1 (https://github.com/1521183894w-bit/mythic-planet-lab) research script"
 CATEGORY_ZH = {
     "history-of-geosciences": "地学史",
     "igneous-and-metamorphic-petrology": "火成岩与变质岩",
