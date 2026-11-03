@@ -1,0 +1,78 @@
+{
+  "method": "u43_review_pack_v1",
+  "images": 38,
+  "frozen_sha_all_equal": true,
+  "runtime_input_hash_mismatches": {
+    "0": [],
+    "100": [],
+    "500": []
+  },
+  "tests": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "tests/tectonics/test_thin_exchange.py",
+      "tests/tectonics/test_basin_strength.py",
+      "tests/tectonics/test_arc_outlet_spike.py",
+      "tests/tectonics/test_relaxation_spike.py",
+      "tests/tectonics/test_b6_halo.py",
+      "tests/tectonics/test_b6_transition.py",
+      "tests/tectonics/test_b6_structured.py",
+      "tests/tectonics/test_engine.py",
+      "tests/tectonics/test_distribution_spike.py",
+      "-q",
+      "-o",
+      "addopts=",
+      "--junitxml=.cache/u43_tests.xml"
+    ],
+    "exit_code": 0,
+    "counts": {
+      "tests": 84,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "passed": 84,
+    "warnings": 8,
+    "elapsed_s": 18.457594900000004,
+    "scope": "related tests only; earlier strict failures not rerun",
+    "test_source_sha256": {
+      "test_thin_exchange.py": "8aadcc283faba8a1ad39675e8fcb9951641409dc563c29ffd933ca17ec810b14",
+      "test_basin_strength.py": "a51cabe5410bebe4c47d592775ba6dd7b137a72c1f208de924048170678fb3de",
+      "test_arc_outlet_spike.py": "dfaf2bb1f535711978ce64e41aecfc115b98de2724d5adaf062ba77155171878",
+      "test_relaxation_spike.py": "d5f346098f7dfdfdf0240ab759a65ccef3de45253c1c168b0dbb01a3e6671ff0",
+      "test_b6_halo.py": "5d67094e8590b3162eeccc6cdd54993bcc929532b9ea2a396f11b59f53f6d7cd",
+      "test_b6_transition.py": "a34769f9f887d119107d9f4cd0a45b3037c709f17d3f0b58ec79a916d7768e2f",
+      "test_b6_structured.py": "da981a4a10c1aa3df578bb3749598263309869f010c46b62a2dcf0e7438c3201",
+      "test_engine.py": "e23ac7fcea0acbcce370635fc8487f8a85d71843758f4b38df71380c1bac657b",
+      "test_distribution_spike.py": "dd0e7441ddf7a94d75ad38088e679fe5a78b1b8cd360da8609ce62213bf191d3"
+    },
+    "junit_sha256": "2442a9f488583a2556557702669d08597e08779708db974f21d9451ef6555c33",
+    "stdout_sha256": "86857fc9bcdf07c3d5498d30081a33aad22cf7c8956d31283c2073985779a308"
+  },
+  "method_class": {
+    "transport": "procedural_constrained",
+    "region_time": "user_override",
+    "elevation": "parameterized_physics",
+    "sampling": "interpolated",
+    "figures": "visual_only"
+  },
+  "review": {
+    "path": "reviews/stage1_2026-11-03_1.md",
+    "severe": 3,
+    "general": 4,
+    "minor": 1,
+    "images_seen": 38,
+    "image_open_operations": 40,
+    "reviewer_original_png_sha_verified": 38,
+    "reviewer_did_not_recompute_native_data": true,
+    "original_bytes": 25182,
+    "original_sha256": "08f758b1d92f0d6747b09a2b8476e3ee0e5fd96ca199eb4873f96c0602dda630",
+    "original_lf_sha256": "08f758b1d92f0d6747b09a2b8476e3ee0e5fd96ca199eb4873f96c0602dda630",
+    "original_prefix_preserved": true,
+    "reviewed_document_hashes_match": true,
+    "delivery": "reviewer file write failed; final text archived verbatim by root; response appended",
+    "coordination": "same reviewer interrupted and resumed for report delivery; judgments not altered"
+  }
+}

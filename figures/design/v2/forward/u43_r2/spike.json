@@ -1,0 +1,103 @@
+{
+  "method": "u43_frozen_thin_exchange_v1",
+  "method_class": "procedural_constrained",
+  "units": {
+    "T": "km",
+    "volume": "km3",
+    "time": "Myr",
+    "elevation": "m",
+    "diffusivity": "km2/Myr"
+  },
+  "source_sha256": "a2cd0f0f2ebf9e8b678a4d9a8975cd7ceec422a167f924f3e323f93d291c56be",
+  "resolution": "L7 about60km; native parcels",
+  "cases": {
+    "0": {
+      "samples": {
+        "356637": {
+          "T_km": 24.46099557148589,
+          "z_m": -1521.9323680884818
+        },
+        "356671": {
+          "T_km": 25.148671348549925,
+          "z_m": -1314.0545617321427
+        },
+        "356774": {
+          "T_km": 29.163203232579335,
+          "z_m": -484.27471026423075
+        },
+        "356712": {
+          "T_km": 28.85809971701348,
+          "z_m": -530.4978928724577
+        },
+        "356863": {
+          "T_km": 27.429818837543163,
+          "z_m": -757.1989486206107
+        }
+      },
+      "max_balance_km3": 0.0,
+      "transferred_cumulative_km3": 0.0,
+      "max_delta_T_km": 0.0
+    },
+    "100": {
+      "samples": {
+        "356637": {
+          "T_km": 28.848750135369215,
+          "z_m": -531.9143544915639
+        },
+        "356671": {
+          "T_km": 29.284927456625063,
+          "z_m": -465.833490321303
+        },
+        "356774": {
+          "T_km": 32.911338909769114,
+          "z_m": 83.56784483002076
+        },
+        "356712": {
+          "T_km": 32.727174068211,
+          "z_m": 55.66687133396641
+        },
+        "356863": {
+          "T_km": 32.044057118572866,
+          "z_m": -47.825346536210816
+        }
+      },
+      "max_balance_km3": 1.3528733688872308e-10,
+      "transferred_cumulative_km3": 203703.72122016945,
+      "max_delta_T_km": 5.236672425545141
+    },
+    "500": {
+      "samples": {
+        "356637": {
+          "T_km": 34.32235537091199,
+          "z_m": 297.3368386931669
+        },
+        "356671": {
+          "T_km": 34.691712285410325,
+          "z_m": 353.2944112396643
+        },
+        "356774": {
+          "T_km": 36.11822181042992,
+          "z_m": 569.4106042801333
+        },
+        "356712": {
+          "T_km": 35.99996592873317,
+          "z_m": 551.494838203075
+        },
+        "356863": {
+          "T_km": 35.852305559341374,
+          "z_m": 529.1242922402182
+        }
+      },
+      "max_balance_km3": 1.7269030649913475e-10,
+      "transferred_cumulative_km3": 440968.7584526438,
+      "max_delta_T_km": 10.813721878393846
+    }
+  },
+  "limits": [
+    "20x1Myr frozen geometry only; not extra geological history",
+    "WT plate302 native continental edges; supplemental cubic response onset20km/scale20km",
+    "no source, erosion, motion, flexure, sediment, heat or density transport",
+    "diffusivity is a sensitivity hypothesis, not calibrated rheology"
+  ],
+  "elapsed_s": 0.8684145999995962
+}
