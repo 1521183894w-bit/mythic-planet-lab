@@ -1,0 +1,15 @@
+{
+  "method": "u44_local_gallery_http_check_v1",
+  "results": [
+    {
+      "gallery": "design/v2/forward/u44_pockets/index.html",
+      "images": 10,
+      "all_http200_png": true
+    },
+    {
+      "gallery": "stage1/u44_partition_pockets/index.html",
+      "images": 80,
+      "all_http200_png": true
+    }
+  ]
+}

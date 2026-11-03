@@ -1,0 +1,13 @@
+{
+  "method": "u44_staging_audit_v1",
+  "staged_files": 124,
+  "staged_working_bytes": 41066444,
+  "png_manifest_count": 39,
+  "png_working_and_staged_sha_all_equal": true,
+  "forbidden_paths_absent": true,
+  "credential_signature_scan_clear": true,
+  "original_untracked_backup_equal": {
+    ".codex/agents/world-reviewer.toml": true
+  },
+  "whitespace_check": "git diff --cached --check reports 3 whitespace-only blank docstring lines in runtime scientific module; retained to preserve exact runtime source SHA; not a test-suite pass claim"
+}

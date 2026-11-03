@@ -1,0 +1,72 @@
+{
+  "method": "u44_review_pack_v1",
+  "images": 39,
+  "frozen_sha_all_equal": true,
+  "runtime_input_hash_mismatches": {
+    "control": [],
+    "uniform": [],
+    "pockets": []
+  },
+  "tests": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "tests/tectonics/test_pocket_exchange.py",
+      "tests/tectonics/test_thin_exchange.py",
+      "tests/tectonics/test_basin_strength.py",
+      "tests/tectonics/test_arc_outlet_spike.py",
+      "tests/tectonics/test_relaxation_spike.py",
+      "tests/tectonics/test_b6_halo.py",
+      "tests/tectonics/test_b6_transition.py",
+      "tests/tectonics/test_b6_structured.py",
+      "tests/tectonics/test_engine.py",
+      "tests/tectonics/test_distribution_spike.py"
+    ],
+    "exit_code": 0,
+    "counts": {
+      "tests": 94,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "passed": 94,
+    "elapsed_s": 68.98906759999954,
+    "scope": "related tests; earlier strict failures not rerun",
+    "test_source_sha256": {
+      "tests/tectonics/test_pocket_exchange.py": "c9616147bca90fa8d6daaa52c4632dd23f08538479b942fdfd21b355243c81ea",
+      "tests/tectonics/test_thin_exchange.py": "8aadcc283faba8a1ad39675e8fcb9951641409dc563c29ffd933ca17ec810b14",
+      "tests/tectonics/test_basin_strength.py": "a51cabe5410bebe4c47d592775ba6dd7b137a72c1f208de924048170678fb3de",
+      "tests/tectonics/test_arc_outlet_spike.py": "dfaf2bb1f535711978ce64e41aecfc115b98de2724d5adaf062ba77155171878",
+      "tests/tectonics/test_relaxation_spike.py": "d5f346098f7dfdfdf0240ab759a65ccef3de45253c1c168b0dbb01a3e6671ff0",
+      "tests/tectonics/test_b6_halo.py": "5d67094e8590b3162eeccc6cdd54993bcc929532b9ea2a396f11b59f53f6d7cd",
+      "tests/tectonics/test_b6_transition.py": "a34769f9f887d119107d9f4cd0a45b3037c709f17d3f0b58ec79a916d7768e2f",
+      "tests/tectonics/test_b6_structured.py": "da981a4a10c1aa3df578bb3749598263309869f010c46b62a2dcf0e7438c3201",
+      "tests/tectonics/test_engine.py": "e23ac7fcea0acbcce370635fc8487f8a85d71843758f4b38df71380c1bac657b",
+      "tests/tectonics/test_distribution_spike.py": "dd0e7441ddf7a94d75ad38088e679fe5a78b1b8cd360da8609ce62213bf191d3"
+    },
+    "junit_sha256": "8ee1059d2112c2ba878544d983f36d257f1d13c7434776a7998e7a26902c51a2",
+    "stdout_sha256": "225ac67935ce40369246b4a4bc076766b2961b65274c15aa030eb9a2901c47b8"
+  },
+  "method_class": {
+    "transport": "procedural_constrained",
+    "region_time": "user_override",
+    "elevation": "parameterized_physics",
+    "sampling": "interpolated",
+    "figures": "visual_only"
+  },
+  "independent_review_archive": {
+    "path": "reviews/stage1_2026-11-03_2.md",
+    "raw_from": "original reviewer final reply, main report through three-line summary",
+    "original_sha256": "c786a77f86b40825ee3395eb69d0ba897de5c10c93ea616a594834caecf70c5f",
+    "original_bytes": 10010,
+    "original_prefix_preserved": true,
+    "only_developer_response_appended": true,
+    "reviewed_images_reported": 39,
+    "independent_png_sha_matches_reported": 39,
+    "reviewer_scientific_recomputation": false,
+    "delivery_interruptions_same_reviewer": 2,
+    "backup_review_started_then_stopped": true,
+    "backup_review_result_used": false
+  }
+}

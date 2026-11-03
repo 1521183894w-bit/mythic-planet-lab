@@ -1,0 +1,57 @@
+{
+  "method": "u44_postreview_water_mask_check_v1",
+  "method_class": "interpolated",
+  "meaning": "read actual output fields; negative continental elevation is not demonstrated lake/wetland/ocean",
+  "resolution": "1024x512 output, L7 about60km process",
+  "units": {
+    "z": "m",
+    "lon_lat": "degree"
+  },
+  "rows": {
+    "P1": {
+      "lon": 7.91015625,
+      "lat": 44.82421875,
+      "z_m": -407.2969970703125,
+      "output_land_mask": false,
+      "nearest_native_ctype": 1,
+      "nearest_native_uid": 356637
+    },
+    "P2": {
+      "lon": 4.04296875,
+      "lat": 44.12109375,
+      "z_m": -536.2332153320312,
+      "output_land_mask": false,
+      "nearest_native_ctype": 1,
+      "nearest_native_uid": 356671
+    },
+    "P3": {
+      "lon": -7.55859375,
+      "lat": 40.25390625,
+      "z_m": -63.3194694519043,
+      "output_land_mask": false,
+      "nearest_native_ctype": 1,
+      "nearest_native_uid": 356774
+    },
+    "P4": {
+      "lon": -9.31640625,
+      "lat": 39.90234375,
+      "z_m": -61.9486083984375,
+      "output_land_mask": false,
+      "nearest_native_ctype": 1,
+      "nearest_native_uid": 356712
+    },
+    "P5": {
+      "lon": -11.07421875,
+      "lat": 39.19921875,
+      "z_m": -243.9042205810547,
+      "output_land_mask": false,
+      "nearest_native_ctype": 1,
+      "nearest_native_uid": 356863
+    }
+  },
+  "limits": [
+    "no hydrology/waterlevel calculation",
+    "no metric definition or thresholds changed",
+    "coast/distance statistical interface remains to audit; this check does not recalculate B metrics"
+  ]
+}
