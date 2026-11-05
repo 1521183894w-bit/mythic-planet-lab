@@ -1,0 +1,81 @@
+{
+  "input": "config/design/final_map_v2.yaml",
+  "code_version": "0ff6b2e-dirty",
+  "method": "v2_present_inland_sea_v1",
+  "source_grid": "2048×1024",
+  "resolution_km": 5,
+  "shape": [
+    780,
+    1700
+  ],
+  "center_lat_lon": [
+    37.5,
+    17.0
+  ],
+  "extent_km": [
+    -4250.0,
+    4250.0,
+    -1950.0,
+    1950.0
+  ],
+  "layers": {
+    "source_coast": {
+      "method_class": "user_override",
+      "units": "mask"
+    },
+    "regional_coast": {
+      "method_class": "interpolated",
+      "units": "mask"
+    },
+    "old_elevation_and_depth": {
+      "method_class": "visual_only",
+      "units": "m"
+    },
+    "initial_lowlands_foothills_and_rock": {
+      "method_class": "user_override",
+      "units": "m / class"
+    },
+    "initial_subgrid_perturbation": {
+      "method_class": "procedural_constrained",
+      "seed": 602,
+      "units": "m"
+    },
+    "incision_and_diffusion": {
+      "method_class": "parameterized_physics",
+      "version": "Fastscape Fortran 2.8.4 + RichDEM 2.4.3",
+      "units": "m"
+    },
+    "geometric_passage": {
+      "method_class": "visual_only",
+      "units": "km"
+    },
+    "earth_reference": {
+      "method_class": "interpolated",
+      "version": "NOAA ETOPO 2022 v1 60s",
+      "units": "m"
+    }
+  },
+  "steps": 16,
+  "step_model_years": 25000,
+  "global_source_ocean_pct": 71.51432157091212,
+  "regional_mask_difference_cells": 0,
+  "regional_land_change_over_150m_km2": 2416800,
+  "regional_new_max_land_m": 5535.74,
+  "land_cells_on_geometric_passage": 0,
+  "source_A": {
+    "ocean_fraction": true,
+    "main_continent": true,
+    "subcontinents": true,
+    "main_inland_sea": true,
+    "main_continent_latitude": true,
+    "polar_continent": true,
+    "open_ocean": true
+  },
+  "source_A_note": "原 v2 全球设计格网的重算结果。区域试验未重跑全球 B 层。",
+  "erosion_absolute_change_land_m_p50_p95": [
+    2.01,
+    54.67
+  ],
+  "notes": "陆缘几何和低地/褶皱外带为现世设计；侵蚀时长与系数为未标定的演示情景。海深为旧终图示意，海路只核对格网水面连通。",
+  "model_seconds": 34.51
+}
