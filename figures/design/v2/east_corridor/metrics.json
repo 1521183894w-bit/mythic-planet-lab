@@ -1,0 +1,119 @@
+{
+  "name": "终图 v2 东方走廊区域样板",
+  "source_sha256": "12549846d7734e581ec9340ad96cc55dc03b2425aeb2bddacf215b6576cc77ac",
+  "projection": "LAEA",
+  "center_lat_lon": [
+    33.2,
+    111.0
+  ],
+  "extent_km": [
+    -1600.0,
+    1600.0,
+    -1220.0,
+    1220.0
+  ],
+  "grid_yx": [
+    1220,
+    1600
+  ],
+  "pixel_km": 2,
+  "seed": 296,
+  "steps": 24,
+  "time_step_years": 25000,
+  "stream_power_m": 0.4,
+  "stream_power_n": 1.0,
+  "regional_highstand_m": 24,
+  "drowned_land_km2": 62928.0,
+  "hill_diffusivity_m2_per_year": 0.045,
+  "rock_k": {
+    "海域": 0,
+    "山地基底与变质岩": 2.5e-06,
+    "前陆砂岩与泥岩": 5e-06,
+    "红层泥岩与粉砂岩": 6.5e-06,
+    "红层砂岩与砾岩": 3e-06,
+    "灰岩与白云岩": 3.3e-06,
+    "花岗岩": 2.7e-06,
+    "谷地与沿岸冲积物": 5e-06
+  },
+  "land_km2": 6092308.0,
+  "drainage_area_balance_error_km2": 0.0,
+  "uphill_links_on_conditioned_surface": 0,
+  "interior_sinks_on_conditioned_surface": 0,
+  "land_area_draining_via_window_edge_km2": 664308.0,
+  "stream_threshold_km2": 96,
+  "main_stream_threshold_km2": 4000,
+  "drawn_channel_cells": 183337,
+  "incision_depth_p95_m": 40.5,
+  "breach_over_5m_land_pct": 0.76,
+  "stream_steps_over_5m_uphill_before_fill": 190,
+  "fill_over_5m_land_pct": 0.05,
+  "fill_max_m": 23.8,
+  "primary_estuary": {
+    "lon": 119.95032698751942,
+    "lat": 34.25732442992401,
+    "drainage_km2": 1540820.0,
+    "red_basin_contributing_km2": 190528,
+    "red_basin_fraction": 0.8130825168140384
+  },
+  "resources": [
+    {
+      "name": "红砂岩采石候选",
+      "index": 1147702,
+      "lon": 104.74555926816326,
+      "lat": 31.108497552130448,
+      "height_m": 315.2,
+      "basis": "红层砂岩露头，邻近河谷，石材性质需区域设定",
+      "method_class": "user_override"
+    },
+    {
+      "name": "制砖陶土候选",
+      "index": 1010349,
+      "lon": 109.91927304527486,
+      "lat": 32.80861239051604,
+      "height_m": 241.1,
+      "basis": "主流域缓坡冲积地，细泥含量为待确认设定",
+      "method_class": "user_override"
+    },
+    {
+      "name": "灰岩石灰候选",
+      "index": 1480678,
+      "lon": 108.5390291247287,
+      "lat": 27.498203714008724,
+      "height_m": 1063.1,
+      "basis": "灰岩露头，邻近河谷，可作为石灰原料候选",
+      "method_class": "user_override"
+    },
+    {
+      "name": "花岗岩采石候选",
+      "index": 1157986,
+      "lon": 119.1119071596042,
+      "lat": 30.892627017467657,
+      "height_m": 705.9,
+      "basis": "花岗岩露头，邻近河谷，石材性质需区域设定",
+      "method_class": "user_override"
+    },
+    {
+      "name": "层控铜矿设定点",
+      "index": 1210211,
+      "lon": 107.06466427629572,
+      "lat": 30.50210539064598,
+      "height_m": 323.8,
+      "basis": "设定含铜流体沿砂岩运移，在局部富有机质的泥岩界面沉淀；品位与可采性未定",
+      "method_class": "user_override"
+    }
+  ],
+  "layers": {
+    "source_height": "visual_only",
+    "coast_resampling": "interpolated",
+    "regional_basin_gradient": "user_override",
+    "regional_fold_hill_geometry": "user_override",
+    "highstand_flooding": "parameterized_physics",
+    "seeded_subgrid_initial_relief": "procedural_constrained",
+    "stream_power_and_diffusion": "parameterized_physics",
+    "surface_flow_and_drainage_area": "parameterized_physics",
+    "bedrock_and_contacts": "user_override",
+    "potential_alluvium": "procedural_constrained",
+    "material_resource_candidates": "user_override"
+  },
+  "model_seconds": 37.17
+}
