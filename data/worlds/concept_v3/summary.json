@@ -1,0 +1,37 @@
+{
+  "method": "concept_v3_native_cartography",
+  "method_class": {
+    "coast": "user_override",
+    "elevation": "visual_only",
+    "palette": "visual_only"
+  },
+  "grid": [
+    2048,
+    1024
+  ],
+  "ocean_fraction": 0.6990685470049717,
+  "largest_land_component_share": 0.7661459803412258,
+  "elevation_visual_minmax_m": [
+    122.86484885609923,
+    7901.038723631804
+  ],
+  "finite_elevation": true,
+  "staged_quality_metrics": "not_run_concept_not_stage_candidate",
+  "climate_and_hydrology": "not_solved",
+  "imagegen_attempt": "failed_network_error_no_image_returned",
+  "elapsed_s": 18.440782799999397,
+  "files": {
+    "01_new_world_atlas.png": {
+      "sha256": "85ec321fc8302fe01a69edfb645cfab4e3d4bd0374b31dbb324d31e06e53803e",
+      "bytes": 2578875
+    },
+    "02_planet_hemispheres.png": {
+      "sha256": "39e5f316efc5b8dd6c41e56134141d6e79071e456b8311c7f011173fca993960",
+      "bytes": 1813248
+    },
+    "03_inland_sea_detail.png": {
+      "sha256": "5a99f585361a296e9c5903d859455045eea6025e5fdc20531713d7baa2d4db64",
+      "bytes": 1830919
+    }
+  }
+}
