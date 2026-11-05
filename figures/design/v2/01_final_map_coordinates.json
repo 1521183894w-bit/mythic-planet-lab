@@ -1,0 +1,22 @@
+{
+  "method": "native_cartographic_coordinate_overlay",
+  "method_class": "visual_only",
+  "base_image": "figures/design/v2/01_final_map.png",
+  "base_sha256": "f7dcf28a8af781886a260f239b68b37473e16b582236d11a41341cb21835bd67",
+  "projection": "EqualEarth",
+  "central_longitude_deg": 30,
+  "longitude_interval_deg": 30,
+  "latitude_interval_deg": 15,
+  "canvas_pixels": [
+    3000,
+    1650
+  ],
+  "axes_position": [
+    0.02,
+    0.07,
+    0.96,
+    0.84
+  ],
+  "geography_changed": false,
+  "output": "figures/design/v2/01_final_map_coordinates.png"
+}
