@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1319">
+  <title>行星图志 · 终图 v2</title>
+  <style><!-- STYLE --></style>
+</head>
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="globe-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
+    <symbol id="layers-icon" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+    <symbol id="reset-icon" viewBox="0 0 24 24"><path d="M5 9a8 8 0 1 1 0 6M5 4v5h5"/></symbol>
+    <symbol id="plus-icon" viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></symbol>
+    <symbol id="minus-icon" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+    <symbol id="arrow-icon" viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5"/></symbol>
+  </svg>
+  <header class="masthead">
+    <div class="brand"><span class="brand-mark"><svg class="icon"><use href="#globe-icon"/></svg></span>奇幻行星实验室</div>
+    <span class="edition"><i></i> 终图 v2 <span class="edition-divider">/</span> 设计预览</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow"><span>01</span> PLANETARY ATLAS</div>
+      <h1 id="title">行星图志</h1>
+      <p class="lede">在球面上看大陆如何相连，<br>内海如何向远洋打开。</p>
+      <nav aria-label="区域速览">
+        <h2>区域速览</h2>
+        <div id="views"></div>
+      </nav>
+    </section>
+    <section class="viewport" aria-label="终图 v2 交互地球仪">
+      <div class="orbital-guide" aria-hidden="true"></div>
+      <div id="scene" tabindex="0" aria-label="拖动旋转，滚动缩放。也可使用方向键、加减键与 Home 键。">
+        <canvas id="surface" aria-hidden="true"></canvas>
+        <svg id="graticule" aria-hidden="true" hidden><path id="grid-lines"/></svg>
+        <div id="pin" hidden></div>
+      </div>
+      <p class="loading" id="status" role="status">正在加载球面数据…</p>
+      <div class="layer-control">
+        <button class="tool layer-toggle" id="layer-toggle" type="button" aria-expanded="false" aria-controls="layers">
+          <svg class="icon"><use href="#layers-icon"/></svg> 图层
+        </button>
+        <section class="layers" id="layers" aria-label="地图图层" hidden>
+          <fieldset>
+            <legend>底图</legend>
+            <label><input type="radio" name="layer" value="relief" checked> 示意地形</label>
+            <label><input type="radio" name="layer" value="coast"> 海陆轮廓</label>
+          </fieldset>
+          <div id="legend" aria-label="当前底图图例"></div>
+          <label class="grid-toggle"><input type="checkbox" id="grid"> 经纬网</label>
+          <p class="method" id="method"></p>
+        </section>
+      </div>
+      <div class="map-tools" aria-label="球面导航">
+        <div class="north" title="北向上">N<span></span></div>
+        <div class="zoom">
+          <button class="tool" type="button" id="zoom-in" aria-label="放大" title="放大"><svg class="icon"><use href="#plus-icon"/></svg></button>
+          <button class="tool" type="button" id="zoom-out" aria-label="缩小" title="缩小"><svg class="icon"><use href="#minus-icon"/></svg></button>
+        </div>
+        <button class="tool reset" type="button" id="reset" aria-label="复位全球视角" title="复位全球视角"><svg class="icon"><use href="#reset-icon"/></svg></button>
+      </div>
+      <div class="map-caption">
+        <span id="coordinates">视图中心</span>
+        <div class="scale" id="scale" aria-label="视图中心比例尺"></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span><i></i> 原终图 v2 <span class="edition-divider">/</span> <span id="resolution">2048 × 1024</span></span>
+    <span class="gestures">拖动旋转 <b>·</b> 滚动或双指缩放 <b>·</b> 点击读坐标</span>
+    <span><span id="layer-name">示意地形</span> <span class="edition-divider">/</span> 球面浏览</span>
+  </footer>
+  <noscript><p class="loading">请启用 JavaScript 以查看地球仪。</p></noscript>
+  <script id="world" type="application/json"><!-- WORLD --></script>
+  <script><!-- APP --></script>
+</body>
+</html>
