@@ -114,7 +114,7 @@ def main(selected: list[str]) -> None:
         log(f"  {r['id']:<22} {time.perf_counter() - t0:4.1f}s  陆地占窗口 {land_frac_g:.0%}")
     if not selected:
         (OUT / "index.json").write_text(json.dumps({
-            "description": "地球区域参照图集（docs/review_protocol.md §2.2；docs/archetype_library.md §9）",
+            "description": "地球区域参照图集（docs/archetype_library.md）",
             "generated": time.strftime("%Y-%m-%d %H:%M:%S"),
             "config": "config/earth_regions.yaml", "regions": index}, ensure_ascii=False, indent=1),
             encoding="utf-8", newline="\n")

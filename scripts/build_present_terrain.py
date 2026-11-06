@@ -21,7 +21,7 @@ from mythic.figures.netcdf import write_netcdf
 from mythic.figures.world import code_version
 from mythic.metrics.grid import LatLonGrid, chord_to_km, km_to_chord
 from mythic.metrics.spherical import distance_to_set_km
-from mythic.tectonics.crust import gdh1_depth_m
+from mythic.terrain.bathymetry import gdh1_depth_m
 
 ROOT = Path(__file__).resolve().parents[1]
 DESIGN = ROOT / "config/design/final_map_v2.yaml"

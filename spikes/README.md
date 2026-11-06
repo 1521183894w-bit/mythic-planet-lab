@@ -1,17 +1,11 @@
-# spikes/
+# 工具小试
 
-小规模技术验证（spike）脚本。每个子目录对应一个工作单元，脚本独立可运行，结论写在 `docs/` 中。
+保留与新主线直接相关的存储、侵蚀和汇流验证。原始报告与实测见 [工具评估](../docs/tool_evaluation.md)。旧球面网格、板块运动和整套阶段试验可从 [清理前的提交](../tasks/tectonic_history.md) 获取。
 
-| 目录 | 工作单元 | 结论文档 |
-|---|---|---|
-| `stage0_tools/` | 0.4 科学工具快速验证 | `docs/tool_evaluation.md` |
-
-运行：
-
-```
-powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -u spikes\stage0_tools\01_spherical_mesh.py
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -u spikes/stage0_tools/03_storage.py
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -u spikes/stage0_tools/05_landscape_evolution.py
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -u spikes/stage0_tools/06_hydrology.py
 ```
 
-- 图写到 `figures/stage0/tools/`，数值结果写到 `figures/stage0/tools/results/*.json`，中间文件写到 `.cache/spikes/`。这些都不进 Git，重跑即可再生成。
-- `06_hydrology.py` 依赖 `05_landscape_evolution.py` 的输出。
-- spike 代码是一次性的验证代码，不是项目代码；正式实现放在 `packages/` 下。
+汇流试验使用侵蚀试验的结果。派生数据写入 D 盘项目内的忽略目录。

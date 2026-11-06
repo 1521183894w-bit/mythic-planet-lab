@@ -899,7 +899,7 @@ def figures(design: dict, grid: LatLonGrid, b: dict, elev: np.ndarray, metrics: 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--design", default="v1")
+    ap.add_argument("--design", default="v2")
     ap.add_argument("--options", default="", help="逗号分隔的设计选项，例如 bigA（洲 A 扩大）")
     ap.add_argument("--no-figures", action="store_true")
     args = ap.parse_args()

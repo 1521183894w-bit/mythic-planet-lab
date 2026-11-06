@@ -10,13 +10,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mythic-planet-lab"
 version = "0.0.1"
-description = "Mythic Planet Laboratory: a fictional Earth-like planet built from geological and climate processes"
+description = "Mythic Planet Laboratory: an editable terrain engine driven by geological and climate processes"
 requires-python = ">=3.12"
 
 [tool.setuptools]
 package-dir = { "mythic" = "packages" }
-# 新增子包（例如 tectonics）时在这里登记，并给该目录加 __init__.py
-packages = ["mythic", "mythic.metrics", "mythic.figures", "mythic.tectonics"]
+# 新增子包时在这里登记，并给该目录加 __init__.py
+packages = ["mythic", "mythic.metrics", "mythic.figures", "mythic.terrain"]
 
 [tool.setuptools.package-data]
 "mythic.metrics" = ["*.yaml"]

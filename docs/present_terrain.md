@@ -8,16 +8,13 @@
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_present_terrain.py
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/make_figures.py --world data/worlds/present_v2/terrain_2048x1024.nc --stage 1 --out figures/stage1/present_v2_ocean
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/present_terrain_evidence.py --figures figures/stage1/present_v2_ocean
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_globe.py --terrain data/worlds/present_v2/terrain_2048x1024.nc --output figures/stage1/present_v2_ocean/globe/index.html
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_globe.py --terrain data/worlds/present_v2/terrain_2048x1024.nc --output figures/design/v2/terrain_globe/index.html
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -m pytest tests/test_present_terrain.py tests/metrics tests/figures
 ```
 
-- `data/worlds/present_v2/terrain_2048x1024.nc` 是阶段二可读取的底图。默认 2048×1024，赤道约 19.55 km，纬度自北向南，经度为 −180° 至 +180° 的像元中心。格网面积按球面计算。
+- `data/worlds/present_v2/terrain_2048x1024.nc` 是兼容导入样本。默认 2048×1024，赤道约 19.55 km，纬度自北向南，经度为 −180° 至 +180° 的像元中心。格网面积按球面计算。
 - `--width 512`、`--width 1024` 适合快速试验，请用 `--output` 单独保存。相同分辨率、配置与种子重建同一地形。用 `--seed` 可改变中尺度细节而保持 v2 海陆。各分辨率分别生成细节，当前没有逐层对应的局部瓦片。
-- `figures/stage1/present_v2_ocean/index.html` 为标准图组。 `evidence/index.html` 含同尺度旧版、候选、ETOPO 对照及固定岸段的构造假说。 `globe/index.html` 可离线打开，支持海陆与水深切换和最近像元查询。
-- 图志与证据脚本校验源设计和地形配置哈希。修改配置后先重建 NetCDF，再生成图组和图志。物理参数写进 NetCDF。半径参与本管线的球面距离和格点面积。v2 图元沿用类地尺寸约定，地球基准和局部投影也使用默认半径。重力、日长和轴倾角供后续过程读取。
+- 球面图志可离线打开，支持海陆与水深切换和最近像元查询。图志校验源设计和地形配置哈希，修改配置后先重建 NetCDF。半径参与球面距离和格点面积计算，重力、日长和轴倾角供后续过程读取。
 
 ## 方法与图层
 
@@ -39,7 +36,7 @@ powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -m pytest tests/
 
 ## 继承与工程检查
 
-现有工作区用 Python/conda-forge 环境生成数据，NumPy、SciPy、xarray、netCDF4 与已有指标和制图代码可直接复用。离线球面页使用原生 WebGL，备有 Canvas 2D 绘制路径。原全球高程以海岸距离、盆地多边形和经验山轴作示意。东方走廊与主内海已有 Fastscape／RichDEM 区域小试。全局水文、气候、洋流和生态包目前仍是目录占位。现世底图沿用现有依赖，复用球面格网与构造框架中的深度公式。
+现有工作区用 Python/conda-forge 环境生成数据。离线球面页使用原生 WebGL，备有 Canvas 2D 绘制路径。原全球高程以海岸距离、盆地多边形和经验山轴作示意。东方走廊与主内海已有 Fastscape／RichDEM 区域小试。水深复用球面格网和 GDH1 深度公式。
 
 | 检查 | 2048×1024 实测 |
 |---|---|

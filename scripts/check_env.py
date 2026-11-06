@@ -3,7 +3,7 @@
 检查三类内容：
 1. 关键包能否导入，记录版本；
 2. 地理空间栈（GDAL / PROJ / rasterio / cartopy / matplotlib）的最小冒烟测试；
-3. 各类缓存与数据目录是否都在工作区内（CLAUDE.md 第 5 节：不得写 C 盘）。
+3. 各类缓存与数据目录是否都在工作区内（见 AGENTS.md）。
 
 由 scripts/setup_env.ps1 安装后自动运行，也可单独运行：
     powershell -ExecutionPolicy Bypass -File scripts\\run.ps1 python scripts\\check_env.py
@@ -14,7 +14,6 @@
 
 from __future__ import annotations
 
-import contextlib
 import importlib
 import importlib.metadata as md
 import io
@@ -30,7 +29,7 @@ from pathlib import Path
 ROOT = Path(os.environ.get("MYTHIC_ROOT", Path(__file__).resolve().parents[1])).resolve()
 REPORT = ROOT / "environment" / "env_report.json"
 
-# (导入名, 发行包名)：与 environment.yml 对应
+# (导入名, 发行包名)：当前地貌工作需要验证的依赖
 PACKAGES = [
     ("numpy", "numpy"),
     ("scipy", "scipy"),
@@ -46,9 +45,6 @@ PACKAGES = [
     ("cartopy", "cartopy"),
     ("matplotlib", "matplotlib"),
     ("skimage", "scikit-image"),
-    ("pygplates", "pygplates"),
-    ("gplately", "gplately"),
-    ("stripy", "stripy"),
     ("landlab", "landlab"),
     ("fastscape", "fastscape"),
     ("fastscapelib_fortran", "fastscapelib-fortran"),
@@ -62,6 +58,7 @@ PACKAGES = [
     ("tqdm", "tqdm"),
     ("pytest", "pytest"),
     ("mythic.metrics", "mythic-planet-lab"),  # 本项目代码（setup_env.ps1 以可编辑模式安装）
+    ("mythic.terrain", "mythic-planet-lab"),
 ]
 
 results: list[dict] = []
@@ -102,21 +99,11 @@ def check(group: str, name: str):
     return wrap
 
 
-# gplately 导入时按它自带的日志配置在"当前目录"创建 gplately.log 和 ptt.log（文件名写死、不可配置），
-# 所以导入它时先切换到 .cache/logs，避免在仓库根目录留下日志文件。
-LOGS = ROOT / ".cache" / "logs"
-CWD_SENSITIVE = {"gplately"}
-
 # ---- 1. 导入 -------------------------------------------------------------------
 for mod_name, dist in PACKAGES:
     t0 = time.perf_counter()
     try:
-        if mod_name in CWD_SENSITIVE:
-            LOGS.mkdir(parents=True, exist_ok=True)
-            with contextlib.chdir(LOGS):
-                mod = importlib.import_module(mod_name)
-        else:
-            mod = importlib.import_module(mod_name)
+        mod = importlib.import_module(mod_name)
         record("import", mod_name, "ok", f"{version_of(mod, dist)}  ({time.perf_counter() - t0:.2f}s)")
     except Exception as exc:  # noqa: BLE001
         record("import", mod_name, "fail", f"{type(exc).__name__}: {exc}")
@@ -250,7 +237,7 @@ except Exception as exc:  # noqa: BLE001
 try:
     import pooch
 
-    location("pooch 默认缓存（gplately 等）", pooch.os_cache("gplately"))
+    location("pooch 默认缓存", pooch.os_cache("mythic-planet-lab"))
 except Exception as exc:  # noqa: BLE001
     record("location", "pooch", "fail", repr(exc))
 

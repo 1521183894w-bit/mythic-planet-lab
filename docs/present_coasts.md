@@ -12,12 +12,10 @@
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_present_terrain.py --coasts
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/make_figures.py --world data/worlds/present_v2/terrain_coasts_2048x1024.nc --stage 1 --out figures/stage1/present_v2_coasts
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/present_terrain_evidence.py --world data/worlds/present_v2/terrain_coasts_2048x1024.nc --figures figures/stage1/present_v2_coasts
-powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_globe.py --terrain data/worlds/present_v2/terrain_coasts_2048x1024.nc --output figures/stage1/present_v2_coasts/globe/index.html
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_globe.py --terrain data/worlds/present_v2/terrain_coasts_2048x1024.nc --output figures/design/v2/coasts_globe/index.html
 ```
 
-标准图是 `figures/stage1/present_v2_coasts/index.html`。对照画廊在同目录的 `evidence/index.html`，从现行 v2 高程、岸线候选和 ETOPO 同分辨率格网采样。需要先按 [现世地形底图](present_terrain.md) 重建原海陆与高程。候选单独存为 `terrain_coasts_2048x1024.nc`，原入口仍可复现 v2 底稿。
+候选单独存为 `terrain_coasts_2048x1024.nc`，可在球面图志打开。原批量图组入口和评审见 [旧路线归档](../tasks/tectonic_history.md)。
 
 ## 实测
 
@@ -31,4 +29,4 @@ powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_gl
 | 范围 | 共 20,953 格改变海陆类别，按球面面积计新增陆地 204.6 万 km²，淹没原陆地 251.3 万 km²。地形变化限于设计走廊或离新旧海陆变化 145 km 内。四条海沟轴均未穿陆。 |
 | 稳定与性能 | 两次 2048×1024 重建的八层数据逐格一致。串行实测约 25–28 秒，NetCDF 约 13.68 MiB。现世相关测试 63 项通过。 |
 
-50 km 结果只描述候选现在的限制。海岸线和岩性靠同尺度图及固定岸段检查验收。阶段一整体还须满足独立评审与用户确认要求。
+上表为原候选的历史诊断。50 km 结果描述样本的形态限制，岸线和岩性仍需结合相应同尺度图件。

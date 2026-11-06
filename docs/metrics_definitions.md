@@ -1,6 +1,6 @@
 # 质量指标的实现定义与地球基准（阶段 0.5）
 
-> 本文是 `docs/quality_metrics.md` 的**实现说明**：每个指标在代码里具体怎么算、参数为什么这样取、地球的基准值是多少、有哪些局限。
+> 本文保留 v2 诊断与地球对照的计算定义、基准值和局限。原阶段验收规则见[旧路线归档](../tasks/tectonic_history.md)。
 > 代码：`packages/metrics/`（`import mythic.metrics`）；参数：`config/metrics.yaml`；基准：`data/earth_reference/baselines_<分辨率>.json`。
 > 修改任何定义、阈值、权重须单独提出、说明理由并经用户同意（CLAUDE.md 第 2 节第 5 条）。
 
@@ -195,7 +195,7 @@
 powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -u scripts\build_earth_reference.py   # 约 30 秒
 powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -u scripts\compute_earth_baselines.py # 约 30 秒（含陆块单元参照）
 powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -u scripts\build_region_atlas.py      # 约 2 分钟
-powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -m pytest                              # 全部测试（2026-10-21 为 59 项）
+powershell -ExecutionPolicy Bypass -File scripts\run.ps1 python -m pytest
 ```
 
 前提：`data/earth_reference/raw/` 中有 ETOPO 与 Natural Earth 原始文件（见 `data/external_manifests/` 的下载地址与 SHA256）。
