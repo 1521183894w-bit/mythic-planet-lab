@@ -115,6 +115,7 @@ class World:
     is_earth: bool = False
     method_label_override: str | None = None   # 只用于盲评时在图中隐去 method_class；真实值仍在 method_class
     tectonics: dict | None = None              # U34：可选的构造图层（世界文件里的 tect_* 变量：名 -> (数组, 属性)）
+    radius_km: float = 6371.0
 
     @property
     def method_label(self) -> str:
@@ -129,7 +130,7 @@ class World:
 
     @property
     def grid(self) -> LatLonGrid:
-        return LatLonGrid.from_shape(self.elevation.shape)
+        return LatLonGrid.from_shape(self.elevation.shape, self.radius_km)
 
     @property
     def resolution(self) -> str:
@@ -138,7 +139,7 @@ class World:
     def compute_kwargs(self) -> dict:
         """传给 mythic.metrics.compute.compute_all 的世界相关参数。"""
         return {"regions": self.regions, "region_names": self.region_names, "region_groups": self.region_groups,
-                "mountain_exclude": self.mountain_exclude}
+                "mountain_exclude": self.mountain_exclude, "radius_km": self.radius_km}
 
 
 def load_earth(resolution: str = "2048x1024") -> World:
@@ -164,6 +165,7 @@ def load_world_nc(path: str | Path) -> World:
         elev = ds["elevation"].values.astype("float64")
         land = (ds["land"].values >= 0.5) if "land" in ds else elev > 0
         attrs = dict(ds.attrs)
+        ice = ds["grounded_ice"].values.astype(bool) if "grounded_ice" in ds else None
         tect = {k: (ds[k].values, dict(ds[k].attrs)) for k in ds.data_vars if str(k).startswith("tect_")} or None
     mc = attrs.get("method_class_elevation")
     if not mc:
@@ -171,7 +173,7 @@ def load_world_nc(path: str | Path) -> World:
     return World(world_id=str(attrs.get("world_id", path.stem)), display_name=str(attrs.get("display_name", path.stem)),
                  elevation=elev, land=land, method_class=mc, source=str(attrs.get("source", path.name)),
                  seed=str(attrs.get("seed", "—")), code_version=str(attrs.get("code_version", code_version())),
-                 tectonics=tect)
+                 tectonics=tect, mountain_exclude=ice, radius_km=float(attrs.get("radius_km", 6371.0)))
 
 
 BLIND_NOTE = "（盲评隐去，评审后在 reviews/stage0_calibration.md 公开）"

@@ -18,7 +18,7 @@
   </svg>
   <header class="masthead">
     <div class="brand"><span class="brand-mark"><svg class="icon"><use href="#globe-icon"/></svg></span>奇幻行星实验室</div>
-    <span class="edition"><i></i> 终图 v2 <span class="edition-divider">/</span> 设计预览</span>
+    <span class="edition"><i></i> 终图 v2 <span class="edition-divider">/</span> <span id="edition-mode">设计预览</span></span>
   </header>
   <main>
     <section class="intro" aria-labelledby="title">
@@ -45,8 +45,7 @@
         <section class="layers" id="layers" aria-label="地图图层" hidden>
           <fieldset>
             <legend>底图</legend>
-            <label><input type="radio" name="layer" value="relief" checked> 示意地形</label>
-            <label><input type="radio" name="layer" value="coast"> 海陆轮廓</label>
+            <div id="base-layers"></div>
           </fieldset>
           <div id="legend" aria-label="当前底图图例"></div>
           <label class="grid-toggle"><input type="checkbox" id="grid"> 经纬网</label>

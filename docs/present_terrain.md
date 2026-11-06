@@ -1,0 +1,56 @@
+# 终图 v2 · 现世地形底图
+
+阶段一工程候选。海陆、主内海、地峡、湖区和冰盖范围沿用 `config/design/final_map_v2.yaml`。现世地形补充假说和细节种子在 `config/design/present_terrain_v1.yaml`。原始球面图志和区域试验仍可独立运行。
+
+## 重建
+
+在项目根目录，使用已建好的项目环境。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_present_terrain.py
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/make_figures.py --world data/worlds/present_v2/terrain_2048x1024.nc --stage 1 --out figures/stage1/present_v2_ocean
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/present_terrain_evidence.py --figures figures/stage1/present_v2_ocean
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python scripts/build_globe.py --terrain data/worlds/present_v2/terrain_2048x1024.nc --output figures/stage1/present_v2_ocean/globe/index.html
+powershell -ExecutionPolicy Bypass -File scripts/run.ps1 python -m pytest tests/test_present_terrain.py tests/metrics tests/figures
+```
+
+- `data/worlds/present_v2/terrain_2048x1024.nc` 是阶段二可读取的底图。默认 2048×1024，赤道约 19.55 km，纬度自北向南，经度为 −180° 至 +180° 的像元中心。格网面积按球面计算。
+- `--width 512`、`--width 1024` 适合快速试验，请用 `--output` 单独保存。相同分辨率、配置与种子重建同一地形。用 `--seed` 可改变中尺度细节而保持 v2 海陆。各分辨率分别生成细节，当前没有逐层对应的局部瓦片。
+- `figures/stage1/present_v2_ocean/index.html` 为标准图组。 `evidence/index.html` 含同尺度旧版、候选、ETOPO 对照及固定岸段的构造假说。 `globe/index.html` 可离线打开，支持海陆与水深切换和最近像元查询。
+- 图志与证据脚本校验源设计和地形配置哈希。修改配置后先重建 NetCDF，再生成图组和图志。物理参数写进 NetCDF。半径参与本管线的球面距离和格点面积。v2 图元沿用类地尺寸约定，地球基准和局部投影也使用默认半径。重力、日长和轴倾角供后续过程读取。
+
+## 方法与图层
+
+| 数据层 | 方法类别 | 含义 |
+|---|---|---|
+| `land` | `user_override` | v2 既定海陆分类。复用 A/B 指标的旧口径，含被旧设计作为水面的内陆咸海。 |
+| `water_type` | `user_override` | 0 干地，1 海水，2 设计淡水湖，3 设计咸水内流湖，4 浮冰架。用它区分内流咸海、普通湖和海洋边界。 |
+| `grounded_ice` | `user_override` | 设计的接地冰区。冰架在海陆指标里按水面计。 |
+| `elevation` | `procedural_constrained` | 现世地表与海底高程，单位 m。接地冰区用经验冰面包络，其余与基岩高程一致。 |
+| `bedrock_elevation` | `procedural_constrained` | 相对现世海平面的陆底与海底。B5 等负高程陆地仍由海陆掩膜识别。陆上设计湖高程为占位值。 |
+| `lithology_province` | `user_override` | 12 个设计岩性区的编号。0 表示岩性待定，编号映射见 NetCDF 属性。 |
+| `open_ocean_reference_age` | `procedural_constrained` | 海底基面所用的年龄代理，单位 Myr。陆地为空值。内海、陆架等受独立剖面控制，代理年龄不能用来解读局部地史。 |
+
+陆地先复用 v2 的山轴、盆底和高原，再按地质省份及基准山系混合不同的起伏。球面三维随机格点用 SciPy 三次插值。年轻山地沿构造走向布置山脊、沿横向布置切谷，并随离山轴距离衰减。古山的起伏更缓，低地幅度更小。山地地形模板为构造控制下的几何近似，阶段二再用汇流、侵蚀和沉积决定谷网、湖底及冲积地貌。
+
+海底按扩张轴距离和设定的半扩张速率估计洋盆基准年龄，再复用项目内的 GDH1 深度关系。陆架、陆坡、内海局部深盆、海沟、转换带及热点海山另行构建。修订后海沟轴使用球面样条，火山岛近岸的浅水带更窄。海盆深度和壳龄关系参考 [Stein & Stein（1992）](https://doi.org/10.1038/359123a0)，陆缘宽度及海底地貌类型的量级参考 [Harris 等（2014）](https://doi.org/10.1016/j.margeo.2014.01.011)。
+
+当前格距只能解析宽尺度的地貌。山系与岩性图上的构造线是现世成因假说。高原东缘的陡边、南方裂谷的闭合端、主内海西北岸以及高纬湾岬仍待处理。设计冰面未求解冰厚与基岩沉降，西海峡的深度还来自浅陆架剖面，格网连通性只适用于本分辨率。
+
+## 继承与工程检查
+
+现有工作区用 Python/conda-forge 环境生成数据，NumPy、SciPy、xarray、netCDF4 与已有指标和制图代码可直接复用。离线球面页使用原生 WebGL，备有 Canvas 2D 绘制路径。原全球高程以海岸距离、盆地多边形和经验山轴作示意。东方走廊与主内海已有 Fastscape／RichDEM 区域小试。全局水文、气候、洋流和生态包目前仍是目录占位。现世底图沿用现有依赖，复用球面格网与构造框架中的深度公式。
+
+| 检查 | 2048×1024 实测 |
+|---|---|
+| 海陆分类与现行 v2 比较 | 变化 0 格。A 层 7/7。旧指标口径海洋 71.5143%，主大陆 1.0664 亿 km²，远方大陆 2164.4 万 km²，极地大陆 1301.6 万 km²。 |
+| 内海 | 主内海 441.0 万 km²，按既有格网规则有一个通外洋海峡和一个通北方内海的海峡。 |
+| B1、B2 | 主大陆 1/9、远方大陆 3/9、极地大陆 2/9。主大陆距海中位 611.8 km，高于 527.7 km 参考上限，距海超过 1000 km 的陆地为 30.29%，参考上限 25.51%。 |
+| 远洋深度层次 | 距岸超过 900 km 的格点，面积加权 P10–P90 由约 −4500 至 −4421 m 扩为 −5550 至 −3588 m。候选全域 −9956 至 +7240 m。 |
+| 陆地窗口的起伏 | 5×5 格窗口的高差中位数。洲 C 内陆 32→88 m，洲 D 丘陵 13→119 m，北方低地 35→61 m，远方西缘 466→950 m。 |
+| 东南外弧复改 | 东南海沟移至岛弧外侧，四条海沟轴均未穿过陆地格。修订前后及地球同比例对照见 `evidence/04_arc_revision.png`。 |
+| 可重复性与性能 | 两次重建的七个数据层逐格一致。2048×1024 完成约 21–22 秒，13.62 MiB。球面 HTML 5.16 MiB。GT 1030 原生 WebGL 路径在 968×774 连续转动约两秒收到 151 个帧回调。Canvas 2D 回退、点选、图层、缩放、经度接缝和上下文丢失已实测。 |
+
+现世地形、指标与制图相关测试共 61 项通过。全仓早一轮测试 361 项通过、1 项跳过，独立地史有三项失败。已从开工前基线 `670b4bf` 抽取源码和测试，在相同环境重现这三项，分别是刚体旋转的应变容差、微陆块在 300 Ma 分离，以及刚体网络速度容差。
+
+本次工程候选已提交独立评审。阶段一仍待验收，海岸与地形的严重项见评审记录。

@@ -23,6 +23,7 @@ let pin = null;
 let flight = null;
 let gestureMoved = false;
 let renderer;
+let samples;
 let frame = 0;
 
 function basis() {
@@ -228,7 +229,20 @@ function drawOverlays(geo) {
     marker.style.top = `${y}px`;
   }
   const point = pin || camera;
-  byId("coordinates").textContent = `${pin ? "选点" : "中心"}  ${formatAngle(point.lat, "N", "S")}  ${formatAngle(point.lon, "E", "W")}`;
+  const coordinate = `${pin ? "选点" : "中心"}  ${formatAngle(point.lat, "N", "S")}  ${formatAngle(point.lon, "E", "W")}`;
+  let label = coordinate;
+  if (pin && samples) {
+    const [nx, ny] = manifest.grid;
+    const x = Math.floor((wrap(pin.lon) + 180) * nx / 360);
+    const y = clamp(Math.floor((90 - pin.lat) * ny / 180), 0, ny - 1);
+    const offset = 4 * (y * nx + x);
+    const meters = 256 * samples[offset] + samples[offset + 1] - manifest.sample_offset_m;
+    const kind = samples[offset + 2];
+    const names = ["高程", "水深", "湖区高程", "咸湖区高程", "冰架下水深"];
+    const value = kind === 1 || kind === 4 ? -meters : meters;
+    label += `  ·  ${names[kind]} ${value.toLocaleString("en")} m`;
+  }
+  byId("coordinates").textContent = label;
   const maxKm = 2 * manifest.radius_km * Math.asin(Math.min(110 / (2 * geo.radius), 1));
   const magnitude = 10 ** Math.floor(Math.log10(maxKm));
   const km = [5, 2, 1].find(value => value * magnitude <= maxKm) * magnitude;
@@ -291,7 +305,9 @@ function showLayers(show) {
 
 function setLayer(name) {
   layer = name;
-  const chips = name === "relief"
+  const chips = name === "bathy"
+    ? [["#0d2f6b", "深海"], ["#4f97d1", "陆坡"], ["#cfeaf7", "浅海"], ["#6f6a5b", "陆地"]]
+    : name === "relief"
     ? [["#2a4c63", "海洋"], ["#809266", "低地"], ["#b48b67", "山地"], ["#d4e1e5", "冰盖"]]
     : [["#1e3b4d", "海洋"], ["#bdb089", "陆地"], ["#497b96", "湖泊"], ["#629796", "咸湖"], ["#b4cbd7", "冰架"]];
   byId("legend").replaceChildren(...chips.map(([color, label]) => {
@@ -303,9 +319,7 @@ function setLayer(name) {
   }));
   const method = manifest.layers[name];
   byId("layer-name").textContent = method.name;
-  byId("method").textContent = name === "relief"
-    ? `终图设计高程与设色 · ${method.method_class}`
-    : `终图海陆设计 · ${method.method_class}`;
+  byId("method").textContent = `${method.method} · ${method.method_class}`;
   refresh();
 }
 
@@ -317,9 +331,17 @@ for (const [index, view] of views.entries()) {
   button.addEventListener("click", () => go(index));
   byId("views").append(button);
 }
+for (const [name, info] of Object.entries(manifest.layers)) {
+  const label = document.createElement("label");
+  const radio = Object.assign(document.createElement("input"), { type: "radio", name: "layer", value: name,
+                                                                 checked: name === "relief" });
+  label.append(radio, ` ${info.name}`);
+  byId("base-layers").append(label);
+}
 selectView(0);
 setLayer("relief");
 byId("resolution").textContent = manifest.grid.join(" × ");
+if (manifest.sample) byId("edition-mode").textContent = "现世地形";
 layerToggle.addEventListener("click", () => showLayers(byId("layers").hidden));
 byId("layers").addEventListener("change", event => {
   if (event.target.name === "layer") setLayer(event.target.value);
@@ -390,6 +412,19 @@ async function initialize() {
     if (image.width !== manifest.grid[0] || image.height !== manifest.grid[1]) throw new Error("格网尺寸与清单不一致");
     return [name, image];
   })));
+  if (manifest.sample) {
+    const image = new Image();
+    image.src = manifest.sample;
+    await image.decode();
+    const [nx, ny] = manifest.grid;
+    if (image.width !== nx || image.height !== ny) throw new Error("查询格网尺寸与清单不一致");
+    const canvas = document.createElement("canvas");
+    canvas.width = nx;
+    canvas.height = ny;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    context.drawImage(image, 0, 0);
+    samples = context.getImageData(0, 0, nx, ny).data;
+  }
   const canvas = byId("surface");
   function useSoftware() {
     const fallback = canvas.cloneNode();

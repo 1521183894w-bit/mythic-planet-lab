@@ -21,7 +21,7 @@ def open_netcdf(path: str | Path) -> xr.Dataset:
     path = Path(path)
     if _memory_io(path):
         return xr.open_dataset(path.read_bytes(), engine="netcdf4")
-    return xr.open_dataset(path)
+    return xr.open_dataset(path, engine="netcdf4")
 
 
 def write_netcdf(ds: xr.Dataset, path: str | Path) -> None:

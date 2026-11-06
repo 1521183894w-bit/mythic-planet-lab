@@ -420,7 +420,7 @@ def region_ramp(p: dict, grid: LatLonGrid, land: np.ndarray, default_amps):
 PLATEAU_MEANDER, BASIN_MEANDER = [120.0, 45.0], [150.0, 50.0]
 
 
-def elevation(design: dict, grid: LatLonGrid, b: dict) -> np.ndarray:
+def elevation(design: dict, grid: LatLonGrid, b: dict, *, ice_surface: bool = True) -> np.ndarray:
     """示意高程（visual_only）：只为看图和让指标代码能跑，不是模拟结果。"""
     land = b["land"]
     d_land = np.nan_to_num(distance_to_set_km(grid, ~land, query=land))
@@ -501,7 +501,8 @@ def elevation(design: dict, grid: LatLonGrid, b: dict) -> np.ndarray:
     # 极地冰盖：冰面高程随离岸距离升高（冰下山脉略微抬升冰面）
     pol = b["polar"]
     ice = 3300.0 * (1 - np.exp(-d_land / 450.0)) + 0.3 * ridge
-    elev[pol] = np.maximum(elev[pol], ice[pol])
+    if ice_surface:
+        elev[pol] = np.maximum(elev[pol], ice[pol])
     # 岛屿
     isl = b["island_peak"] > 0
     elev[isl] = np.maximum(30.0, b["island_peak"][isl] * (1 - np.exp(-d_land[isl] / 25.0)))
