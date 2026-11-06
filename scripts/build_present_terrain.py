@@ -26,6 +26,7 @@ from mythic.tectonics.crust import gdh1_depth_m
 ROOT = Path(__file__).resolve().parents[1]
 DESIGN = ROOT / "config/design/final_map_v2.yaml"
 CONFIG = ROOT / "config/design/present_terrain_v1.yaml"
+COASTS = ROOT / "config/design/coasts_v2.yaml"
 OUTPUT = ROOT / "data/worlds/present_v2/terrain_2048x1024.nc"
 GDH1 = "Stein & Stein 1992, doi:10.1038/359123a0"
 MARINE_REFERENCE = "Harris et al. 2014, doi:10.1016/j.margeo.2014.01.011"
@@ -268,15 +269,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--width", type=int, choices=(512, 1024, 2048), default=2048)
     parser.add_argument("--seed", type=int, help="细节种子，默认使用配置值")
+    parser.add_argument("--coasts", nargs="?", type=Path, const=COASTS, help="应用现世岸段候选，可传设计 YAML")
     parser.add_argument("--output", type=Path, help="默认在 data/worlds/present_v2 下按格网命名")
     args = parser.parse_args()
     design = apply_options(yaml.safe_load(DESIGN.read_text(encoding="utf-8")), set())
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))
     grid = LatLonGrid(args.width, args.width // 2, config["planet"]["radius_km"])
-    output = args.output or OUTPUT.with_name(f"terrain_{grid.name}.nc")
+    tag = "terrain_coasts" if args.coasts else "terrain"
+    output = args.output or OUTPUT.with_name(f"{tag}_{grid.name}.nc")
     seed = config["detail_seed"] if args.seed is None else args.seed
     t = perf_counter()
     geo, bedrock, surface, age = make_terrain(grid, design, config, seed)
+    coast_bytes = args.coasts.read_bytes() if args.coasts else None
+    if coast_bytes:
+        from present_coasts import make_coast
+
+        coast_design = yaml.safe_load(coast_bytes)
+        original_land = geo["land"]
+        geo, bedrock, surface = make_coast(grid, geo, bedrock, surface, coast_design)
+        age[original_land & ~geo["land"]] = np.nan
     dims = ("lat", "lon")
     land = geo["land"]
     def layer(array, units, kind, method, assumptions, reference="config/design/final_map_v2.yaml", dtype="float32"):
@@ -320,6 +331,20 @@ def main():
                "radius_km": grid.radius_km, "planet": json.dumps(config["planet"]),
                "lithology_codes": json.dumps({i: s["id"] for i, s in enumerate(design["lithology"], 1)}),
                "grid": grid.name})
+    if coast_bytes:
+        ds.attrs.update(display_name="终图 v2 · 现世岸线候选",
+                        coast_config_sha256=sha256(coast_bytes).hexdigest(),
+                        coast_region_codes=json.dumps({i: spec["id"] for i, spec in enumerate(coast_design["regions"], 1)}))
+        ds.attrs["source"] += " + " + args.coasts.name
+        ds["coast_design_region"] = layer(geo["coast_design_region"], "1", "user_override",
+                                          "现世岸线走廊 v1", "0 为岸段走廊外；区号见 coast_region_codes",
+                                          args.coasts.name, dtype="uint8")
+        for name in ("land", "water_type", "grounded_ice"):
+            ds[name].attrs.update(method="design_final_map.build v2 + 现世岸段走廊 v1",
+                                  reference=DESIGN.name + " + " + args.coasts.name)
+        for name in ("elevation", "bedrock_elevation"):
+            ds[name].attrs["method"] += " + 岸段高程过渡 v1"
+            ds[name].attrs["reference"] += "；" + args.coasts.name
     output.parent.mkdir(parents=True, exist_ok=True)
     with NamedTemporaryFile(dir=output.parent, prefix=output.name, suffix=".tmp", delete=False) as handle:
         temp = Path(handle.name)

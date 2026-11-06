@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image
 import yaml
 
-from build_present_terrain import CONFIG as TERRAIN_CONFIG
+from build_present_terrain import COASTS, CONFIG as TERRAIN_CONFIG
 from design_final_map import LatLonGrid, apply_options, build, elevation
 from mythic.figures.netcdf import open_netcdf
 from mythic.figures.style import shaded_elevation
@@ -59,6 +59,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--terrain", type=Path, help="使用阶段 1 的现世高程 NetCDF")
+    parser.add_argument("--coasts", type=Path, default=COASTS, help="用于核对岸段来源的设计 YAML")
     args = parser.parse_args()
 
     source = SOURCE.read_bytes()
@@ -68,6 +69,10 @@ def main():
             if (ds.attrs["design_sha256"] != hashlib.sha256(source).hexdigest() or
                     ds.attrs["terrain_config_sha256"] != hashlib.sha256(TERRAIN_CONFIG.read_bytes()).hexdigest()):
                 raise ValueError("高程文件与当前设计或地形配置不一致，请重建高程")
+            coast_hash = ds.attrs.get("coast_config_sha256")
+            if coast_hash and coast_hash != hashlib.sha256(args.coasts.read_bytes()).hexdigest():
+                raise ValueError("岸段设计配置已变更，请重建高程")
+            coast_meta = dict(ds.land.attrs)
             elev = ds.elevation.values
             grid = LatLonGrid.from_shape(elev.shape, float(ds.attrs["radius_km"]))
             if not (np.array_equal(ds.lat, grid.lat) and np.array_equal(ds.lon, grid.lon)):
@@ -100,6 +105,7 @@ def main():
     }
     if args.terrain:
         manifest["layers"]["relief"] = terrain_meta
+        manifest["layers"]["coast"] = {**coast_meta, "name": "海陆轮廓"}
         manifest["layers"]["bathy"] = {**terrain_meta, "name": "海底高程"}
         # 16 位带偏移整数，误差不超过 0.5 m。蓝通道保留地表类别。
         packed = (np.rint(elev).astype(np.int32) + 12000).astype(np.uint16)
